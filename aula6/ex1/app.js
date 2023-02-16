@@ -89,20 +89,38 @@ entradaDados.question("Qual o nome do Aluno(a)?: \n", function(Aluno){
                                         if(isNaN(media)){
                                             entradaDados.close()
                                         }else if(media < 70 && media >= 50 ){
+                                            entradaDados.question("Entre a nota do exame: \n",function(nota){
+                                                if(mediaEscolar.vazio(nota) || mediaEscolar.numeroValido(nota)){
+                                                    entradaDados.close()
+                                            
+                                                }else{
+                                                    notas.unshift(nota);
+                                                    let mediaExame = mediaEscolar.media(notas);
+
+                                                    if(mediaExame < 60 ){
+                                                        console.log(
+                                                            mediaEscolar.genero(sexoAluno, "aluno") + ` ${nomeAluno} foi reprovado na disciplina ${diciplina} \nCurso: ${curso} \n${mediaEscolar.genero(sexoProfessor, "professor")}: ${professor} \nNotas do aluno: ${notas[0]},${notas[1]},${notas[2]},${notas[3]} \nMédia Final: ${media}\nMédia Final do exame: ${mediaExame}` )
+                                                            entradaDados.close()
+                                                    }
+                                                    else{
+                                                        console.log(
+                                                            mediaEscolar.genero(sexoA, "aluno") + ` ${nomeAluno} foi aprovado no exame na disciplina ${diciplina} \nCurso: ${curso}\n${mediaEscolar.genero(sexoP, "professor")}: ${professor}\nNotas do aluno: ${notas[0]},${notas[1]},${notas[2]},${notas[3]},${notas[4]}\nMédia Final: ${media}\nMédia Final do exame: ${mediaExame}` )
+                                                            entradaDados.close()
+                                                    }
 
 
+                                                }
+                                            })
                                         }else{
                                             if(media < 50 ){
                                                 console.log(
                                                     mediaEscolar.genero(sexoAluno, "aluno") + ` ${nomeAluno} foi reprovado na disciplina ${diciplina} \nCurso: ${curso} \n${mediaEscolar.genero(sexoProfessor, "professor")}: ${professor} \nNotas do aluno: ${notas[0]},${notas[1]},${notas[2]},${notas[3]} \nMédia Final: ${media}` )
-                                            }else {
+                                                    entradaDados.close()
+                                            }
+                                            else{
                                                 console.log(
-                                                    mediaEscolar.genero(sexoA, "aluno") + ` ${nomeAluno} foi aprovado na disciplina ${diciplina} \n
-                                                    Curso: ${curso} \n
-                                                    ${mediaEscolar.genero(sexoP, "professor")}: ${professor} \n
-                                                    Notas do aluno: ${notas[0]},${notas[1]},${notas[2]},${notas[3]} \n
-                                                    Média Final: ${media}` )
-
+                                                    mediaEscolar.genero(sexoA, "aluno") + ` ${nomeAluno} foi aprovado na disciplina ${diciplina} \nCurso: ${curso}\n${mediaEscolar.genero(sexoP, "professor")}: ${professor}\nNotas do aluno: ${notas[0]},${notas[1]},${notas[2]},${notas[3]}\nMédia Final: ${media}` )
+                                                    entradaDados.close()
                                             }
                                             
 
@@ -135,11 +153,3 @@ entradaDados.question("Qual o nome do Aluno(a)?: \n", function(Aluno){
 }
 })
 
-
-
-/*
-let qualquer = [Number(20),Number(20),Number(30)] 
-
-let resultado =  mediaEscolar.media(qualquer)
-
-console.log(resultado) */

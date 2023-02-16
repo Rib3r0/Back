@@ -26,21 +26,21 @@ const media = function(media){
 }
 
 const genero = function(pessoa,funcao){
-    let genero = pessoa
-    let posicao = funcao
+    let genero = pessoa.toLowerCase();
+    let posicao = funcao.toLowerCase();
     if(genero == "feminino"){
-        if(posicao == "O aluno"){
-            return "aluna"
+        if(posicao == "aluno"){
+            return "A aluna"
         }
         if(posicao == "professor"){
             return "profesora"
         }
     }else{
-        if(posicao == "O aluno"){
-            return "aluno"
+        if(posicao == "aluno"){
+            return "O aluno"
         }
         if(posicao == "professor"){
-            return "profesor"
+            return "professor"
         }
     }
 
