@@ -5,11 +5,10 @@
     versão: 1.0
 ******************************************************************************/
 
-const { validarNumero } = require("../../ex2/module/tabuada")
-
-const resultado = function(minimo, maximo){
+const resultado = function(minimo, maximo,formato){
     let i = minimo
     let n = maximo
+    let f = formato
 
     let impares = []
     let pares = []
@@ -29,28 +28,33 @@ const resultado = function(minimo, maximo){
             i++
     
         }
-        console.log('PARES:')
-        for( i in pares){
-            console.log(pares[i])
-            
-        }
-        console.log("Qtde de números encontrados:" + pares.length)
-        console.log('IMPARES:')
-        for(i in impares){
-            console.log(impares[i])
-            
-        }
-        console.log("Qtde de números encontrados:" + impares.length)
-    }else{
 
+        if(f == 'pares' || f == 'todos'){
+            console.log('PARES:')
+            for( i in pares){
+                console.log(pares[i])
+                
+            }
+            console.log("Qtde de números encontrados:" + pares.length)
+        }
+        else if(f == 'impares' || f == 'todos'){
+            console.log('IMPARES:')
+            for(i in impares){
+                console.log(impares[i])
+                
+            }
+            console.log("Qtde de números encontrados:" + impares.length)
+        }
+        else{
+            console.log("formato invalido!")
+        }
     }
-
 }
 const validarNumeroMinimo = function(numero){
     if(numero >= 0 && numero <= 500){
         return true
     }else{
-        console.log("Erro: o valor maximo deve ser entre 0 a 500")
+        console.log("Erro: o valor minimo deve ser entre 0 a 500")
         return false
     }
 }
