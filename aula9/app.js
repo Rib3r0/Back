@@ -31,6 +31,9 @@ const bodyParser = require('body-parser');
 //Cria um objeto com as informações da classe express
 const app = express();
 
+const estadosCidades = require('./modulo/estados_cidades.js')
+
+//define as permissões no header da API
 app.use((request, response, next) => {
     //Permite gerenciar a origem das requisições da API
     // * --> significa que a API será publica
@@ -51,12 +54,153 @@ app.use((request, response, next) => {
 //endPoint para listar os Estados
 app.get('/estados', cors(), async function(request, response, next) {
 
-    const estadosCidades = require('./modulo/estados_cidades.js')
+    //port do arquivo de funções
+    //caha a função que retorna os estados
     let listaDeEstado = estadosCidades.getListaDeEstados()
-    response.json(listaDeEstado);
-    response.status(200);
+
+    //tratamento para validar se a função realizou o processamento
+    if(listaDeEstado){
+        response.json(listaDeEstado);
+        response.status(200);    
+    }else{
+        response.status(500)
+        
+    }
 
 });
+
+app.get('/estado/sigla/:uf', cors(), async function(request, response, next){
+    //:uf é uma variavel que será utilizada para passagens de valores, na URL da requisição
+
+    //recebe o valor da variavel uf, que será encaminhada na URL da requisição
+    let siglaEstado = request.params.uf;
+    let statusCode
+    let json = {}
+    //tratamento para validar os valores incaminhados no parametro
+
+    if(siglaEstado == '' || siglaEstado == undefined || siglaEstado.length != 2){
+        statusCode = 400
+        json.message = "Não é possivel processar a requisição pois a sigla do estado não foi informada, ou não atende a quantidade de caracteres (2 digitos)"
+    }else{
+        let estado =estadosCidades.getDadosEstado(siglaEstado)
+        if(estado){
+            statusCode = 200
+            json =estado
+        }else{
+            statusCode = 404
+            
+        }
+
+
+    }
+    
+    response.status(statusCode)
+    response.json(json)
+
+})
+
+//endPoint lista as caracteristicas do estado pela sigla
+app.get('/capital/sigla/:uf', cors(), async function(request, response, next){
+    //:uf é uma variavel que será utilizada para passagens de valores, na URL da requisição
+
+    //recebe o valor da variavel uf, que será encaminhada na URL da requisição
+    let siglaEstado = request.params.uf;
+    let statusCode
+    let json = {}
+    //tratamento para validar os valores incaminhados no parametro
+
+    if(siglaEstado == '' || siglaEstado == undefined || siglaEstado.length != 2){
+        statusCode = 400
+        json.message = "Não é possivel processar a requisição pois a sigla do estado não foi informada, ou não atende a quantidade de caracteres (2 digitos)"
+    }else{
+        let estado =estadosCidades.getCapitalEstado(siglaEstado)
+        if(estado){
+            statusCode = 200
+            json =estado
+        }else{
+            statusCode = 404
+            
+        }
+
+
+    }
+    
+    response.status(statusCode)
+    response.json(json)
+
+})
+
+//endPoint lista as caracteristicas do estado pela sigla
+app.get('/regiao/:regiao', cors(), async function(request, response, next){
+    //:uf é uma variavel que será utilizada para passagens de valores, na URL da requisição
+
+    //recebe o valor da variavel uf, que será encaminhada na URL da requisição
+    let regiao= request.params.regiao;
+    let statusCode
+    let json = {}
+    //tratamento para validar os valores incaminhados no parametro
+
+    if(regiao == '' || regiao == undefined){
+        statusCode = 400
+        json.message = "Não é possivel processar a requisição pois o paremetro é invalido"
+    }else{
+        let estados =estadosCidades.getEstadosRegiao(regiao)
+        if(estados){
+            statusCode = 200
+            json = estados
+        }else{
+            statusCode = 404
+            
+        }
+
+
+    }
+    
+    response.status(statusCode)
+    response.json(json)
+
+})
+
+//endPoint lista as caracteristicas do estado pela sigla
+app.get('/capital', cors(), async function(request, response, next){
+    //:uf é uma variavel que será utilizada para passagens de valores, na URL da requisição
+
+    response.status(200)
+    response.json(estadosCidades.getCapitalPais())
+
+})
+
+app.get('/cidades/sigla/:uf', cors(), async function(request, response, next){
+    //:uf é uma variavel que será utilizada para passagens de valores, na URL da requisição
+
+    //recebe o valor da variavel uf, que será encaminhada na URL da requisição
+    let siglaEstado = request.params.uf;
+    let statusCode
+    let json = {}
+    //tratamento para validar os valores incaminhados no parametro
+
+    if(siglaEstado == '' || siglaEstado == undefined || siglaEstado.length != 2){
+        statusCode = 400
+        json.message = "Não é possivel processar a requisição pois a sigla do estado não foi informada, ou não atende a quantidade de caracteres (2 digitos)"
+    }else{
+        let estado = estadosCidades.getCidades(siglaEstado)
+        if(estado){
+            statusCode = 200
+            json =estado
+        }else{
+            statusCode = 404
+            
+        }
+
+
+    }
+    
+    response.status(statusCode)
+    response.json(json)
+
+})
+
+
 
 //Permite carregar os endpoint criados e aguarda as requições
 //Pelo protocolo HTTP na porta 8080
